@@ -1,3 +1,4 @@
 (library
  (name game)
- (public_name game))
+ (public_name game)
+ (libraries graphics))

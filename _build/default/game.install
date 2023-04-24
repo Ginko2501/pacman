@@ -8,8 +8,17 @@ lib: [
   "_build/install/default/lib/game/game.cmx"
   "_build/install/default/lib/game/game.cmxa"
   "_build/install/default/lib/game/game.ml"
+  "_build/install/default/lib/game/game__Voxel.cmi"
+  "_build/install/default/lib/game/game__Voxel.cmt"
+  "_build/install/default/lib/game/game__Voxel.cmti"
+  "_build/install/default/lib/game/game__Voxel.cmx"
   "_build/install/default/lib/game/opam"
+  "_build/install/default/lib/game/voxel.ml"
+  "_build/install/default/lib/game/voxel.mli"
 ]
 libexec: [
   "_build/install/default/lib/game/game.cmxs"
+]
+doc: [
+  "_build/install/default/doc/game/README.md"
 ]

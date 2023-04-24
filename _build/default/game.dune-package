@@ -1,6 +1,6 @@
 (lang dune 3.6)
 (name game)
-(sections (lib .) (libexec .))
+(sections (lib .) (libexec .) (doc ../../doc/game))
 (files
  (lib
   (META
@@ -12,19 +12,29 @@
    game.cmx
    game.cmxa
    game.ml
-   opam))
- (libexec (game.cmxs)))
+   game__Voxel.cmi
+   game__Voxel.cmt
+   game__Voxel.cmti
+   game__Voxel.cmx
+   opam
+   voxel.ml
+   voxel.mli))
+ (libexec (game.cmxs))
+ (doc (README.md)))
 (library
  (name game)
  (kind normal)
  (archives (byte game.cma) (native game.cmxa))
  (plugins (byte game.cma) (native game.cmxs))
  (native_archives game.a)
+ (requires graphics)
  (main_module_name Game)
  (modes byte native)
  (modules
   (wrapped
    (main_module_name Game)
+   (modules
+    ((name Voxel) (obj_name game__Voxel) (visibility public) (impl) (intf)))
    (alias_module
     (name Game)
     (obj_name game)
