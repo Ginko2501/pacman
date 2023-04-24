@@ -1,0 +1,34 @@
+(lang dune 3.6)
+(name game)
+(sections (lib .) (libexec .))
+(files
+ (lib
+  (META
+   dune-package
+   game.a
+   game.cma
+   game.cmi
+   game.cmt
+   game.cmx
+   game.cmxa
+   game.ml
+   opam))
+ (libexec (game.cmxs)))
+(library
+ (name game)
+ (kind normal)
+ (archives (byte game.cma) (native game.cmxa))
+ (plugins (byte game.cma) (native game.cmxs))
+ (native_archives game.a)
+ (main_module_name Game)
+ (modes byte native)
+ (modules
+  (wrapped
+   (main_module_name Game)
+   (alias_module
+    (name Game)
+    (obj_name game)
+    (visibility public)
+    (kind alias)
+    (impl))
+   (wrapped true))))
