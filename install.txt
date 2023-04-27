@@ -1,0 +1,19 @@
+First install all packages needed from CS 3110.
+
+In the terminal, install Graphics module using:
+$ opam install graphics
+
+Download the zip file and unzip it to your preferred directory. 
+
+In the terminal, cd to the right directory: CS3110-Final-Project, and then enter:
+dune build
+$ utop
+
+Enter:
+#require "graphics";;
+#use "pacman.ml";;
+in utop
+
+Then, you can see the new window and start the game. 
+
+If not working, we could demo it for you during our meeting. 

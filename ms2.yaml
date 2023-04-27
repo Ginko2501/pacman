@@ -1,0 +1,32 @@
+# Members of your group.
+group:
+  - name: Jade Yang
+    netid: zy389
+  - name: Zilu Li
+    netid: zl327
+  - name: Nick Huang
+    netid: zh428
+  - name: Zichen Wang
+  netid: zw336@cornell.edu
+# Your PM.
+pm:
+  name: Derek Sanchez
+  netid: dms554
+# Set to false if you don't want your gallery entry to be public.
+publish: true
+# Pithy title
+title: "The PacMan"
+# OK if this is a Cornell Github link, but public gallery viewers won't be able to see it.
+git-repo: "https://github.coecis.cornell.edu/zl327/CS3110-Final-Project"
+# If you have no demo screencast, replace the url string with an empty string ""
+demo-video-url: "https://youtu.be/n069Ny4nk_U"
+# Write a short, attention-grabbing description of your project.
+desc: >
+This project will recreate the standar game Pac-Man. The implementation should 
+include a playable Pac-Man character that can move around the maze and collect 
+pellets, four ghost characters that move independently around the maze and chase
+the player, a score system that tracks the number of pellets collected and the 
+time taken to complete the game, and an end game condition that triggers 
+when the player is caught by a ghost or all the pellets are collected. The 
+entire interface will be generated using a terminal library and we will 
+incorporate a graphical user interface (GUI) toward the conclusion of the project.
