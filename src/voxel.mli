@@ -6,7 +6,7 @@ type t = {
   mutable s : state
 }
 
-val make : int -> int -> state -> t
+val make : state -> int * int -> t
 (**makes a new voxel with the given x and y coordinates and state*)
 
 val plot : t -> unit

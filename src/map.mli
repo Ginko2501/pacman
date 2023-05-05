@@ -1,0 +1,1 @@
+val map_wall : (int * int) list
