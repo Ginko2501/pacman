@@ -1,20 +1,17 @@
 open Voxel
 
+(* [height] is the number of voxels in the y direction
+   [width] is the number of voxels in the x direction *)
 let height = 20
-
 let width = 20
 
+(* [t] is the map as a list of voxels *)
 type t = {
   voxels : Voxel.t list;
 }
 
-(* let rec init_walls 
-  (x : int) 
-  (y : int) 
-  (walls : (int * int) list)
-: (int * int) list =  *)
-
-
+(* [init_helper] is a helper function for [init] that creates a list of voxels
+   that represents the map *)
 let rec init_helper 
   (x : int) 
   (y : int) 
@@ -31,26 +28,78 @@ let rec init_helper
     else 
       init_helper (x+1) y (Voxel.make Player (40*x, 40*y) :: voxels)
 
+(* [init] returns the initial map *)
 let init () : t = 
   let voxels = init_helper 0 0 [] in
   { voxels = voxels }
 
-(* let init () : t = 
-  let voxels = [] in 
-  for i = 0 to height-1 do
-    for j = 0 to width-1 do
-      ignore (voxels = Voxel.make Player (i, j) :: voxels);
-    done;
-  done;
-  print_endline ("?"^(string_of_int (List.length voxels)));
-  (* ignore(
-    if voxels.(0).s = Player then 
-      print_endline "Player"
+(* [get_voxel] returns the voxel at the given coordinates *)
+let rec get_voxel (m : t) (x : int) (y : int) : Voxel.t option =
+  match m.voxels with
+  | [] -> None
+  | h :: t -> 
+    if Voxel.get_x h = x && Voxel.get_y h = y then 
+      Some h
     else 
-      print_endline "Not Player"
-  ); *)
-  { voxels = voxels} *)
+      get_voxel { voxels = t } x y
 
+(* [get_voxel_state] returns the type of the voxel at the given coordinates *)
+let get_voxel_state (m : t) (x : int) (y : int) : Voxel.state option =
+  match get_voxel m x y with
+  | None -> None
+  | Some v -> Some v.s
+
+(* [set_voxel] sets the voxel at the given coordinates to the given voxel *)
+let rec set_voxel (m : t) (x : int) (y : int) (v : Voxel.t) : t =
+  match m.voxels with
+  | [] -> { voxels = [] }
+  | h :: t -> 
+    if Voxel.get_x h = x && Voxel.get_y h = y then 
+      { voxels = v :: t }
+    else 
+      { voxels = h :: (set_voxel { voxels = t } x y v).voxels }
+
+(* [set_voxel_state] sets the voxel at given coordinates to the given state *)
+let set_voxel_state (m : t) (x : int) (y : int) (s : Voxel.state) : t =
+  match get_voxel m x y with
+  | None -> m
+  | Some v -> 
+      Voxel.set_state v s;
+      set_voxel m x y v
+
+(* [get_player] returns the player voxel *)
+let rec get_player (m : t) : Voxel.t option = 
+  match m.voxels with
+  | [] -> None
+  | h :: t -> 
+    if Voxel.get_state h = Player then Some h
+    else get_player { voxels = t }
+
+(* [get_player_state] returns the state of the player voxel *)
+let get_player_state (m : t) : Voxel.state option =
+  match get_player m with
+  | None -> None
+  | Some p -> Some p.s
+
+(* [set_player] sets the player voxel to the given voxel *)
+let set_player (m : t) (v : Voxel.t) : t =
+  match get_player m with
+  | None -> m
+  | Some p -> 
+      Voxel.set_state p Empty;
+      set_voxel m (Voxel.get_x v) (Voxel.get_y v) v
+
+(* [set_player_state] sets the player voxel to the given state *)
+let set_player_state (m : t) (s : Voxel.state) : t =
+  match get_player m with
+  | None -> m
+  | Some p -> 
+      Voxel.set_state p s;
+      set_voxel_state m (Voxel.get_x p) (Voxel.get_y p) s
+
+
+      
+(* [draw] draws the map *)
 let rec draw (m : t) = 
   match m.voxels with
   | [] -> ()
