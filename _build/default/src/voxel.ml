@@ -1,20 +1,64 @@
 open Graphics
 
+(* [state] is the state of a voxel 
+   [Player] is the player state
+   [Bot] is the bot state
+   [Wall] is the wall state
+   [Empty] is the empty state
+   [Dot] is the dot state *)
 type state = Player | Bot | Wall | Empty | Dot
 
+(* [t] is the type of a voxel
+   [x] is the x coordinate of the voxel
+   [y] is the y coordinate of the voxel
+   [s] is the state of the voxel *)
 type t = {
   x : int;
   y : int;
-  mutable s : state
+  mutable s : state 
 }
 
-let make (x : int) (y : int) (s : state) : t = {x; y; s}
+(* [make s x y] is a voxel with state [s] and coordinates [x] and [y] *)
+let make (s : state) (x, y) : t = {x; y; s}
 
-(* [plot v] plots the voxel v onto the screen *)
-let plot (v : t) =
+(* [get_state v] is the state of [v] *)
+let get_state (v : t) : state = v.s
+
+(* [set_state v s] sets the state of [v] to [s] *)
+let set_state (v : t) (s : state) : unit = v.s <- s
+
+(* [get_x v] is the x coordinate of [v] *)
+let get_x (v : t) : int = v.x
+
+(* [get_y v] is the y coordinate of [v] *)
+let get_y (v : t) : int = v.y
+
+(* [get_coords] is the coordinates of [v] *)
+let get_coords (v : t) : int * int = (v.x, v.y)
+
+(* [plot v] plots [v] on the graphics window.
+   If the state of v is [Player], then a pacman is drawn.
+   If the state of v is [Dot], then a white circle is drawn.
+   If the state of v is [Wall], then a blue square is drawn.
+   If the state of v is [Empty], then a black square is drawn.
+   If the state of v is [Bot], then a red circle is drawn. *)
+let draw (v : t) =
   match v.s with
-  | _ -> 
-      set_color yellow; 
-      fill_circle v.x v.y 20;
-      set_color black;
-      fill_arc v.x v.y 20 20 (-27) 27;
+  | Player -> 
+      Player.draw_pacman (v.x, v.y) (-25) 25
+  | Dot -> 
+      set_color white; 
+      fill_circle v.x v.y 5
+  | Wall -> 
+      set_color blue; 
+      draw_rect (v.x-20) (v.y-20) 40 40;
+  | Empty -> 
+      set_color black; 
+      fill_rect (v.x-20) (v.y-20) 40 40
+  | Bot -> 
+      set_color red;
+      fill_circle v.x v.y 8;
+      fill_rect (v.x - 8) (v.y - 10) 16 10
+
+
+
