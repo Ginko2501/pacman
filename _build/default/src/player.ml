@@ -50,3 +50,26 @@ let draw_pacman (x, y) a1 a2 =
   (* draw with background color*)
   set_color black;
   fill_arc x y 16 16 a1 a2
+
+(* let self_empty map p = Player.(Map.set_voxel_state map p.x p.y Empty)
+
+let move_pacman map p = 
+  let key = read_key () in
+  if key = 'd' then 
+    (print_endline "right";
+    (Player.set_state p Right;
+    (if Map.get_voxel_state map (p.x+1) p.y = Some Wall then map
+    else (Map.set_voxel_state (self_empty map p) (p.x+1) p.y Player))))
+  else if key = 'a' then 
+    (Player.set_state p Left;
+    (if Map.get_voxel_state map (p.x-1) p.y = Some Wall then map
+    else (Map.set_voxel_state (self_empty map p) (p.x-1) p.y Player)))
+  else if key = 'w' then 
+    (Player.set_state p Up;
+    (if Map.get_voxel_state map p.x (p.y+1) = Some Wall then map
+    else (Map.set_voxel_state (self_empty map p) p.x (p.y+1) Player)))
+  else if key = 's' then 
+    (Player.set_state p Down;
+    (if Map.get_voxel_state map p.x (p.y-1) = Some Wall then map
+    else (Map.set_voxel_state (self_empty map p) p.x (p.y+1) Player)))
+  else map *)

@@ -14,22 +14,22 @@ val get_voxel : t -> int -> int -> Voxel.t option
 val get_voxel_state : t -> int -> int -> Voxel.state option
 
 (* [set_voxel] sets the voxel at the given coordinates to the given voxel *)
-val set_voxel : t -> int -> int -> Voxel.t -> t
+val set_voxel : t -> int -> int -> Voxel.t -> unit
 
 (* [set_voxel_state] sets the voxel at given coordinates to the given state *)
-val set_voxel_state : t -> int -> int -> Voxel.state -> t
+val set_voxel_state : t -> int -> int -> Voxel.state -> unit
 
 (* [get_player] returns the player voxel *)
-val get_player : t -> Voxel.t option
+(* val get_player : t -> Voxel.t option *)
 
 (* [get_player_state] returns the state of the player voxel *)
-val get_player_state : t -> Voxel.state option
+(* val get_player_state : t -> Voxel.state option *)
 
 (* [set_player] sets the player voxel to the given voxel *)
-val set_player : t -> Voxel.t -> t
+(* val set_player : t -> Voxel.t -> t *)
 
 (* [set_player_state] sets the player voxel to the given state *)
-val set_player_state : t -> Voxel.state -> t
+(* val set_player_state : t -> Voxel.state -> t *)
 
 (* [draw m] draws the map [m] *)
 

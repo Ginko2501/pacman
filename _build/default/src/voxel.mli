@@ -34,6 +34,9 @@ val get_y : t -> int
 (* [get_coords v] is the coordinates of voxel [v] *)
 val get_coords : t -> int * int
 
+(* [string_of_state s] is a string representation of state [s] *)
+val string_of_state : state -> string
+
 (* [plot v] plots [v] on the graphics window.
    If the state of v is [Player], then a pacman is drawn.
    If the state of v is [Dot], then a white circle is drawn.

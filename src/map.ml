@@ -50,52 +50,47 @@ let get_voxel_state (m : t) (x : int) (y : int) : Voxel.state option =
   | Some v -> Some v.s
 
 (* [set_voxel] sets the voxel at the given coordinates to the given voxel *)
-let rec set_voxel (m : t) (x : int) (y : int) (v : Voxel.t) : t =
-  match m.voxels with
-  | [] -> { voxels = [] }
-  | h :: t -> 
-    if Voxel.get_x h = x && Voxel.get_y h = y then 
-      { voxels = v :: t }
-    else 
-      { voxels = h :: (set_voxel { voxels = t } x y v).voxels }
+(* make this t->int->int->Voxel.t->unit *)
+let set_voxel (m : t) (x : int) (y : int) (v : Voxel.t) : unit =
+  match get_voxel m x y with
+  | None -> ()
+  | Some voxel -> voxel.s <- v.s
 
 (* [set_voxel_state] sets the voxel at given coordinates to the given state *)
-let set_voxel_state (m : t) (x : int) (y : int) (s : Voxel.state) : t =
+let set_voxel_state (m : t) (x : int) (y : int) (s : Voxel.state) : unit =
   match get_voxel m x y with
-  | None -> m
-  | Some v -> 
-      Voxel.set_state v s;
-      set_voxel m x y v
+  | None -> ()
+  | Some v -> Voxel.set_state v s
 
 (* [get_player] returns the player voxel *)
-let rec get_player (m : t) : Voxel.t option = 
+(* let rec get_player (m : t) : Voxel.t option = 
   match m.voxels with
   | [] -> None
   | h :: t -> 
     if Voxel.get_state h = Player then Some h
-    else get_player { voxels = t }
+    else get_player { voxels = t } *)
 
 (* [get_player_state] returns the state of the player voxel *)
-let get_player_state (m : t) : Voxel.state option =
+(* let get_player_state (m : t) : Voxel.state option =
   match get_player m with
   | None -> None
-  | Some p -> Some p.s
+  | Some p -> Some p.s *)
 
 (* [set_player] sets the player voxel to the given voxel *)
-let set_player (m : t) (v : Voxel.t) : t =
+(* let set_player (m : t) (v : Voxel.t) : unit =
   match get_player m with
-  | None -> m
+  | None -> ()
   | Some p -> 
       Voxel.set_state p Empty;
-      set_voxel m (Voxel.get_x v) (Voxel.get_y v) v
+      set_voxel m (Voxel.get_x v) (Voxel.get_y v) v *)
 
 (* [set_player_state] sets the player voxel to the given state *)
-let set_player_state (m : t) (s : Voxel.state) : t =
+(* let set_player_state (m : t) (s : Voxel.state) : unit =
   match get_player m with
-  | None -> m
+  | None -> ()
   | Some p -> 
       Voxel.set_state p s;
-      set_voxel_state m (Voxel.get_x p) (Voxel.get_y p) s
+      set_voxel_state m (Voxel.get_x p) (Voxel.get_y p) s *)
 
 
       

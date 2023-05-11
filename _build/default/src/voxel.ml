@@ -36,6 +36,14 @@ let get_y (v : t) : int = v.y
 (* [get_coords] is the coordinates of [v] *)
 let get_coords (v : t) : int * int = (v.x, v.y)
 
+(* [string_of_state s] is the string representation of [s] *)
+let string_of_state = function
+  | Player -> "Player"
+  | Bot -> "Bot"
+  | Wall -> "Wall"
+  | Empty -> "Empty"
+  | Dot -> "Dot"
+
 (* [plot v] plots [v] on the graphics window.
    If the state of v is [Player], then a pacman is drawn.
    If the state of v is [Dot], then a white circle is drawn.

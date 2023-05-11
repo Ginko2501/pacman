@@ -11,6 +11,11 @@ let init_graphics () =
   set_window_title "Pac-Man";
   resize_window screen_width screen_height
 
+let clear () =
+  let bg_color = black in
+  set_color bg_color;
+  fill_rect 0 0 screen_width screen_height
+
 (* draw the start screen *)
 (* this function is called once at the beginning of the program *)
 let draw_start_screen () =
@@ -37,43 +42,56 @@ let draw_start_screen () =
     moveto ((screen_width / 2) - 40) ((screen_height / 2) - 30);
     draw_string "Start Game"
 
-(* draw the map *)
-(* this function is called once at the beginning of the program *)
-(* let draw_map () =
-  let bg_color = black in
-  set_color bg_color;
-  fill_rect 0 0 screen_width screen_height;
-  let a = List.map (Voxel.make Voxel.Wall) Map.map_wall in
-  List.iter Voxel.draw a;
-  Voxel.(make Player (60, 60) |> draw)  *)
-
-
-(* wait for the user to click the start button *)
-(* this function is called once at the beginning of the program *)
-let rec wait_for_start_click () =
-  if button_down () then
-    let x, y = mouse_pos () in
-    if
-      x > (screen_width / 2) - 50
-      && x < (screen_width / 2) + 50
-      && y > (screen_height / 2) - 50
-      && y < screen_height / 2
-    then ()
-    else wait_for_start_click ()
-  else wait_for_start_click ()
-
+(* [map] is the map of the game *)
 let map = Map.init()
 
+(* draw the map *)
+(* this function is called every iteration of the main loop *)
 let draw_map () = 
   Map.draw map
 
+(* [started] is whether the game has started *)
+let started = ref false
+
+(* check if the start button has been clicked *)
+(* this function is called every iteration of the main loop *)
+let start_click () = 
+  if button_down () then
+    let x, y = mouse_pos () in
+    if x > (screen_width / 2) - 50
+    && x < (screen_width / 2) + 50
+    && y > (screen_height / 2) - 50
+    && y < screen_height / 2
+    then started := true
+    else ()
+  else ()
+
 (* main function *)
 (* this function is called once at the beginning of the program *)
-let main () =
-  init_graphics ();
-  draw_map ();
-  wait_for_start_click ();
-  draw_start_screen ()
+let rec main () = 
+  Unix.sleepf 0.2;
+  clear ();
+  if !started then (
+    draw_map ();
+    let v = Map.get_voxel map 0 0 in
+    match v with 
+    | None -> print_endline "None"
+    | Some v -> print_endline (Voxel.string_of_state v.s);
+    Map.set_voxel_state map 0 0 Voxel.Empty;
+    let v = Map.get_voxel map 0 0 in
+    match v with 
+    | None -> print_endline "None"
+    | Some v -> print_endline (Voxel.string_of_state v.s);
+    Unix.sleepf 10.0;
+    draw_map ();
+    main ())
+  else
+    draw_start_screen ();
+    start_click ();
+    main ()
+    
 
 (* Run the program *)
-let () = main ()
+let () = 
+  init_graphics ();
+  main ()
