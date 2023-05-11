@@ -110,8 +110,8 @@ let move_player (m : t) (p : Player.t) : unit =
     else if dir = Player.Right then x + 40
     else x in
   let new_y = 
-    if dir = Player.Up then y - 40
-    else if dir = Player.Down then y + 40
+    if dir = Player.Up then y + 40
+    else if dir = Player.Down then y - 40
     else y in
   (* print_endline ((string_of_int x)^(string_of_int y)); *)
   match get_voxel m new_x new_y with

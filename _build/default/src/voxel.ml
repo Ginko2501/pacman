@@ -57,13 +57,13 @@ let string_of_state = function
         fill_rect (v.x-20) (v.y-20) 40 40;
         Player.draw_pacman (v.x, v.y) (-25) 25
     | Dot -> 
-      set_color black;
-      fill_rect (v.x-20) (v.y-20) 40 40;
+        set_color black;
+        fill_rect (v.x-20) (v.y-20) 40 40;
         set_color yellow; 
         fill_circle v.x v.y 5
     | Wall -> 
-      set_color black;
-      fill_rect (v.x-20) (v.y-20) 40 40;
+        set_color black;
+        fill_rect (v.x-20) (v.y-20) 40 40;
         set_color blue; 
         fill_rect (v.x-18) (v.y-18) 36 36;
     | Empty -> 
