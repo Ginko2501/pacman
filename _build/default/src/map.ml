@@ -120,6 +120,7 @@ let move_player (m : t) (p : Player.t) : unit =
     if Voxel.get_state v = Dot then 
       (Player.set_x p new_x;
       Player.set_y p new_y;
+      Player.inc_score p;
       set_voxel_state m x y Empty;
       set_voxel_state m new_x new_y Player;)
     else if Voxel.get_state v = Bot then 
@@ -166,9 +167,11 @@ let move_player (m : t) (p : Player.t) : unit =
 
       
 (* [draw] draws the map *)
-let rec draw (m : t) = 
+let rec draw (m : t) (p : Player.t)= 
   match m.voxels with
   | [] -> ()
   | h :: t -> 
     Voxel.draw h;
-    draw { voxels = t }
+    (if Voxel.get_state h = Voxel.Player then 
+    (Player.draw_pacman p; draw { voxels = t } p)
+    else draw { voxels = t } p)

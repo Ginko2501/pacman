@@ -34,4 +34,4 @@ val move_player : t -> Player.t -> unit
 (* val set_player_state : t -> Voxel.state -> t *)
 
 (* [draw m] draws the map [m] *)
-val draw : t -> unit
+val draw : t -> Player.t -> unit

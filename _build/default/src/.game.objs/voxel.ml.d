@@ -1,1 +1,1 @@
-src/voxel.ml: Graphics Player
+src/voxel.ml: Graphics

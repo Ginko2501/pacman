@@ -49,8 +49,15 @@ let player = Player.init 60 60
 
 (* draw the map *)
 (* this function is called every iteration of the main loop *)
-let draw_map () = 
-  Map.draw map
+let draw_game () = 
+  Map.draw map player;
+  (* draw the score at the right top *)
+  (* string size is not changed now *)
+  let score_color = rgb 255 255 255 in
+  set_color score_color;
+  set_text_size 40; (* does not work right now *)
+  moveto (screen_width - 100) (screen_height - 50);
+  draw_string ("Score: " ^ (string_of_int (Player.get_score player)))
 
 (* [started] is whether the game has started *)
 let started = ref false
@@ -81,40 +88,18 @@ let read_click () =
     Unix.sleepf 10.0;   
 *)
 
-(* let self_empty map p = Player.(Map.set_voxel_state map p.x p.y Empty)
-
-let move_pacman map p = 
-   let key = read_key () in
-      if key = 'd' then 
-        (print_endline "here";
-        (Player.set_state p Right;
-        (if Map.get_voxel_state map (p.x+1) p.y = Some Wall then ()
-        else self_empty map p; (Map.set_voxel_state map (p.x+1) p.y Player))))
-      else if key = 'a' then 
-        (Player.set_state p Left;
-        (if Map.get_voxel_state map (p.x-1) p.y = Some Wall then ()
-        else self_empty map p; (Map.set_voxel_state map (p.x-1) p.y Player)))
-      else if key = 'w' then 
-        (Player.set_state p Up;
-        (if Map.get_voxel_state map p.x (p.y+1) = Some Wall then ()
-        else self_empty map p; (Map.set_voxel_state map p.x (p.y+1) Player)))
-      else if key = 's' then 
-        (Player.set_state p Down;
-        (if Map.get_voxel_state map p.x (p.y-1) = Some Wall then ()
-        else self_empty map p; (Map.set_voxel_state map p.x (p.y-1) Player)))
-      else () *)
-
 let read_keys () = 
-  let key = read_key () in
-  if key = 'd' then 
-    Player.set_state player Right
-  else if key = 'a' then 
-    Player.set_state player Left
-  else if key = 'w' then 
-    Player.set_state player Up
-  else if key = 's' then 
-    Player.set_state player Down
-  else ()
+  if key_pressed () then
+    let key = read_key () in
+    if key = 'd' then 
+      Player.set_state player Right
+    else if key = 'a' then 
+      Player.set_state player Left
+    else if key = 'w' then 
+      Player.set_state player Up
+    else if key = 's' then 
+      Player.set_state player Down
+    else ()
 
 (* main function *)
 (* this function is called once at the beginning of the program *)
@@ -122,7 +107,7 @@ let rec main () =
   Unix.sleepf 0.2;
   clear ();
   if !started then (
-    draw_map ();
+    draw_game ();
     read_keys ();
     Map.move_player map player;
     main ())

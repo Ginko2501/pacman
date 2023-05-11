@@ -53,9 +53,7 @@ let string_of_state = function
    let draw (v : t) =
     match v.s with
     | Player -> 
-        set_color black;
-        fill_rect (v.x-20) (v.y-20) 40 40;
-        Player.draw_pacman (v.x, v.y) (-25) 25
+        ()
     | Dot -> 
         set_color black;
         fill_rect (v.x-20) (v.y-20) 40 40;
