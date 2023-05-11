@@ -11,8 +11,8 @@ type t = {
 }
 
 (* [init_helper] is a helper function for [init] that creates a list of voxels
-   that represents the map *)
-let rec init_helper 
+   that represents the map. This is the OLD version of init_helper that was used for testing. It only creates a map with walls on the edges. *)
+(* let rec init_helper 
   (x : int) 
   (y : int) 
   (voxels : Voxel.t list)
@@ -26,7 +26,46 @@ let rec init_helper
     if x = 0 || x = width-1 || y = 0 || y = height-1 then 
       init_helper (x+1) y (Voxel.make Wall (40*x, 40*y) :: voxels)
     else 
-      init_helper (x+1) y (Voxel.make Player (40*x, 40*y) :: voxels)
+      init_helper (x+1) y (Voxel.make Empty (40*x, 40*y) :: voxels) *)
+
+(* [init_helper] is a helper function for [init] that creates a list of voxels
+   that represents the map *)
+let rec init_helper 
+  (x : int) 
+  (y : int) 
+  (voxels : Voxel.t list)
+: Voxel.t list =
+  if x = width then 
+    if y = height - 1 then 
+      voxels
+    else 
+      init_helper 0 (y+1) voxels
+  else 
+    if x = 0 || x = width-1 || y = 0 || y = height-1 then 
+      init_helper (x+1) y (Voxel.make Wall (40*x+20, 40*y+20) :: voxels)
+    else if 
+      (x = 10 && (y = 1 || y = 2 || y = 3)) || 
+      (x = 9 && (y = 16 || y = 18 || y = 17)) ||
+      (x = 3 && (y = 16 || y = 15 || y = 14 || y = 13 || y = 12 || y = 11)) ||
+      (x = 3 && (y = 8 || y = 7 || y = 5 || y = 4 || y = 6 || y = 3)) ||
+      (x = 16 && (y = 16 || y = 15 || y = 14 || y = 13 || y = 12 || y = 11)) ||
+      (x = 16 && (y = 8 || y = 7 || y = 5 || y = 4 || y = 6 || y = 3)) ||
+      ((x = 4 || x = 5 || x = 6) && y = 16) ||
+      ((x = 4 || x = 5 ||x = 6 || x = 7) && y = 3) ||
+      ((x = 15 || x = 14 || x = 13 || x = 12) && y = 16) ||
+      ((x = 15 || x = 14 || x = 13) && y = 3) ||
+      (x = 6 || x = 7 || x = 8 || x = 9 || x= 10 || x = 11 || x = 12 || x = 13)&&
+      (y = 6 || y = 13) ||
+      (x = 6 && (y = 7 || y = 8 || y= 9 || y = 10)) ||
+      (x = 13 && (y = 11 || y = 12 || y= 9 || y = 10)) 
+      then
+    init_helper (x+1) y (Voxel.make Wall (40*x+20, 40*y+20) :: voxels)
+      else if (x = 10 && y = 10 )||(x = 9 && y = 9)
+      then init_helper (x+1) y (Voxel.make Bot (40*x+20, 40*y+20) :: voxels)
+      else if (x = 1 && y = 1)
+        then init_helper (x+1) y (Voxel.make Player (40*x+20, 40*y+20) :: voxels)
+  else
+    init_helper (x+1) y (Voxel.make Dot (40*x+20, 40*y+20) :: voxels)
 
 (* [init] returns the initial map *)
 let init () : t = 
@@ -61,6 +100,38 @@ let set_voxel_state (m : t) (x : int) (y : int) (s : Voxel.state) : unit =
   match get_voxel m x y with
   | None -> ()
   | Some v -> Voxel.set_state v s
+
+let move_player (m : t) (p : Player.t) : unit = 
+  let x = Player.get_x p in
+  let y = Player.get_y p in
+  let dir = Player.get_state p in
+  let new_x = 
+    if dir = Player.Left then x - 40
+    else if dir = Player.Right then x + 40
+    else x in
+  let new_y = 
+    if dir = Player.Up then y - 40
+    else if dir = Player.Down then y + 40
+    else y in
+  (* print_endline ((string_of_int x)^(string_of_int y)); *)
+  match get_voxel m new_x new_y with
+  | None -> ()
+  | Some v -> 
+    if Voxel.get_state v = Dot then 
+      (Player.set_x p new_x;
+      Player.set_y p new_y;
+      set_voxel_state m x y Empty;
+      set_voxel_state m new_x new_y Player;)
+    else if Voxel.get_state v = Bot then 
+      (Player.set_x p new_x;
+      Player.set_y p new_y;)
+    else if Voxel.get_state v = Empty then 
+      (Player.set_x p new_x;
+      Player.set_y p new_y;
+      set_voxel_state m x y Empty;
+      set_voxel_state m new_x new_y Player;)
+
+(* [move_bot] moves the bot in the given direction *)
 
 (* [get_player] returns the player voxel *)
 (* let rec get_player (m : t) : Voxel.t option = 

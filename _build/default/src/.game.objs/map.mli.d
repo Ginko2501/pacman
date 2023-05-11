@@ -1,1 +1,1 @@
-src/map.mli: Voxel
+src/map.mli: Player Voxel

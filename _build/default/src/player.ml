@@ -13,13 +13,13 @@ type state = Up | Down | Left | Right | Dead
    [y] is the y coordinate of the pacman.
    [s] is the state of the pacman. *)
 type t = {
-  x : int;
-  y : int;
+  mutable x : int;
+  mutable y : int;
   mutable s : state
 }
 
 (* [init_pacman x y] is the initial pacman with coordinates [x] and [y]. *)
-let init_pacman x y = {
+let init x y = {
   x = x;
   y = y;
   s = Right
@@ -34,10 +34,14 @@ let get_y p = p.y
 (* [get_state p] is the state of the pacman [p]. *)
 let get_state p = p.s
 
+(* [set_x p x] sets the x coordinate of the pacman [p] to [x]. *)
+let set_x p x = p.x <- x
+
+(* [set_y p y] sets the y coordinate of the pacman [p] to [y]. *)
+let set_y p y = p.y <- y
+
 (* [set_state p s] sets the state of the pacman [p] to [s]. *)
 let set_state p s = p.s <- s
-
-(* [move_up p] moves the pacman [p] up. *)
 
 
 (* [draw_pacman (x, y) a1 a2] draws the pacman with center at [(x, y)] and
@@ -51,25 +55,3 @@ let draw_pacman (x, y) a1 a2 =
   set_color black;
   fill_arc x y 16 16 a1 a2
 
-(* let self_empty map p = Player.(Map.set_voxel_state map p.x p.y Empty)
-
-let move_pacman map p = 
-  let key = read_key () in
-  if key = 'd' then 
-    (print_endline "right";
-    (Player.set_state p Right;
-    (if Map.get_voxel_state map (p.x+1) p.y = Some Wall then map
-    else (Map.set_voxel_state (self_empty map p) (p.x+1) p.y Player))))
-  else if key = 'a' then 
-    (Player.set_state p Left;
-    (if Map.get_voxel_state map (p.x-1) p.y = Some Wall then map
-    else (Map.set_voxel_state (self_empty map p) (p.x-1) p.y Player)))
-  else if key = 'w' then 
-    (Player.set_state p Up;
-    (if Map.get_voxel_state map p.x (p.y+1) = Some Wall then map
-    else (Map.set_voxel_state (self_empty map p) p.x (p.y+1) Player)))
-  else if key = 's' then 
-    (Player.set_state p Down;
-    (if Map.get_voxel_state map p.x (p.y-1) = Some Wall then map
-    else (Map.set_voxel_state (self_empty map p) p.x (p.y+1) Player)))
-  else map *)

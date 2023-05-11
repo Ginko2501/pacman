@@ -1,18 +1,22 @@
 type state = Up | Down | Left | Right | Dead
 
 type t = {
-  x : int;
-  y : int;
+  mutable x : int;
+  mutable y : int;
   mutable s : state
 }
 
-val init_pacman : int -> int -> t
+val init : int -> int -> t
 
 val get_x : t -> int
 
 val get_y : t -> int
 
 val get_state : t -> state
+
+val set_x : t -> int -> unit
+
+val set_y : t -> int -> unit
 
 val set_state : t -> state -> unit
 

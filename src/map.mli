@@ -19,6 +19,8 @@ val set_voxel : t -> int -> int -> Voxel.t -> unit
 (* [set_voxel_state] sets the voxel at given coordinates to the given state *)
 val set_voxel_state : t -> int -> int -> Voxel.state -> unit
 
+val move_player : t -> Player.t -> unit
+
 (* [get_player] returns the player voxel *)
 (* val get_player : t -> Voxel.t option *)
 
@@ -32,5 +34,4 @@ val set_voxel_state : t -> int -> int -> Voxel.state -> unit
 (* val set_player_state : t -> Voxel.state -> t *)
 
 (* [draw m] draws the map [m] *)
-
 val draw : t -> unit

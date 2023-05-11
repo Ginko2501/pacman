@@ -45,6 +45,8 @@ let draw_start_screen () =
 (* [map] is the map of the game *)
 let map = Map.init()
 
+let player = Player.init 60 60
+
 (* draw the map *)
 (* this function is called every iteration of the main loop *)
 let draw_map () = 
@@ -55,7 +57,7 @@ let started = ref false
 
 (* check if the start button has been clicked *)
 (* this function is called every iteration of the main loop *)
-let start_click () = 
+let read_click () = 
   if button_down () then
     let x, y = mouse_pos () in
     if x > (screen_width / 2) - 50
@@ -79,6 +81,41 @@ let start_click () =
     Unix.sleepf 10.0;   
 *)
 
+(* let self_empty map p = Player.(Map.set_voxel_state map p.x p.y Empty)
+
+let move_pacman map p = 
+   let key = read_key () in
+      if key = 'd' then 
+        (print_endline "here";
+        (Player.set_state p Right;
+        (if Map.get_voxel_state map (p.x+1) p.y = Some Wall then ()
+        else self_empty map p; (Map.set_voxel_state map (p.x+1) p.y Player))))
+      else if key = 'a' then 
+        (Player.set_state p Left;
+        (if Map.get_voxel_state map (p.x-1) p.y = Some Wall then ()
+        else self_empty map p; (Map.set_voxel_state map (p.x-1) p.y Player)))
+      else if key = 'w' then 
+        (Player.set_state p Up;
+        (if Map.get_voxel_state map p.x (p.y+1) = Some Wall then ()
+        else self_empty map p; (Map.set_voxel_state map p.x (p.y+1) Player)))
+      else if key = 's' then 
+        (Player.set_state p Down;
+        (if Map.get_voxel_state map p.x (p.y-1) = Some Wall then ()
+        else self_empty map p; (Map.set_voxel_state map p.x (p.y-1) Player)))
+      else () *)
+
+let read_keys () = 
+  let key = read_key () in
+  if key = 'd' then 
+    Player.set_state player Right
+  else if key = 'a' then 
+    Player.set_state player Left
+  else if key = 'w' then 
+    Player.set_state player Up
+  else if key = 's' then 
+    Player.set_state player Down
+  else ()
+
 (* main function *)
 (* this function is called once at the beginning of the program *)
 let rec main () = 
@@ -86,10 +123,12 @@ let rec main () =
   clear ();
   if !started then (
     draw_map ();
+    read_keys ();
+    Map.move_player map player;
     main ())
   else
     draw_start_screen ();
-    start_click ();
+    read_click ();
     main ()
     
 

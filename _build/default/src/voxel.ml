@@ -50,23 +50,41 @@ let string_of_state = function
    If the state of v is [Wall], then a blue square is drawn.
    If the state of v is [Empty], then a black square is drawn.
    If the state of v is [Bot], then a red circle is drawn. *)
-let draw (v : t) =
-  match v.s with
-  | Player -> 
-      Player.draw_pacman (v.x, v.y) (-25) 25
-  | Dot -> 
-      set_color white; 
-      fill_circle v.x v.y 5
-  | Wall -> 
-      set_color blue; 
-      draw_rect (v.x-20) (v.y-20) 40 40;
-  | Empty -> 
-      set_color black; 
-      fill_rect (v.x-20) (v.y-20) 40 40
-  | Bot -> 
+   let draw (v : t) =
+    match v.s with
+    | Player -> 
+        set_color black;
+        fill_rect (v.x-20) (v.y-20) 40 40;
+        Player.draw_pacman (v.x, v.y) (-25) 25
+    | Dot -> 
+      set_color black;
+      fill_rect (v.x-20) (v.y-20) 40 40;
+        set_color yellow; 
+        fill_circle v.x v.y 5
+    | Wall -> 
+      set_color black;
+      fill_rect (v.x-20) (v.y-20) 40 40;
+        set_color blue; 
+        fill_rect (v.x-18) (v.y-18) 36 36;
+    | Empty -> 
+        set_color black; 
+        fill_rect (v.x-20) (v.y-20) 40 40
+    | Bot -> 
+      set_color black;
+      fill_rect (v.x-20) (v.y-20) 40 40;
       set_color red;
-      fill_circle v.x v.y 8;
-      fill_rect (v.x - 8) (v.y - 10) 16 10
+      let r = 16 in
+      fill_arc v.x v.y r r 0 180;
+      fill_poly [|(v.x-r,   v.y);       (v.x-r,    v.y-r);
+                  (v.x-r+3, v.y-r/2);   (v.x-r+6,  v.y-r);
+                  (v.x-r+9, v.y-r/2);   (v.x-r+12, v.y-r);
+                  (v.x-r+15, v.y-r/2);   (v.x-r+18, v.y-r);
+                  (v.x-r+21, v.y-r/2);   (v.x-r+24, v.y-r);
+                  (v.x-r+27, v.y-r/2);   (v.x-r+30, v.y-r);
+                  (v.x+r,   v.y-r);     (v.x+r,    v.y)  ;|];
+      set_color black;
+      fill_circle (v.x - 8) (v.y + 2) 4;
+      fill_circle (v.x + 8) (v.y + 2) 4;
 
 
 
