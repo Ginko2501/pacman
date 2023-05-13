@@ -7,12 +7,7 @@ Download the zip file and unzip it to your preferred directory.
 
 In the terminal, cd to the right directory: CS3110-Final-Project, and then enter:
 dune build
-$ utop
-
-Enter:
-#require "graphics";;
-#use "pacman.ml";;
-in utop
+make play
 
 Then, you can see the new window and start the game. 
 
